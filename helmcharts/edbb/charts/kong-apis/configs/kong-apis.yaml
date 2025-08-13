@@ -9126,3 +9126,75 @@ kong_apis:
     config.limit_by: credential
   - name: request-size-limiting
     config.allowed_payload_size: "{{ .Values.medium_request_size_limit }}"     
+
+  - name: retireFrameworkTerm
+  uris: "{{ .Values.framework_service_prefix }}/v3/term/retire"
+  upstream_url: "{{ .Values.taxonomy_service_url }}/framework/v3/term/retire"
+  strip_uri: true
+  plugins:
+  - name: jwt
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - name: acl
+    config.whitelist:
+    - frameworkAdmin
+  - name: rate-limiting
+    config.policy: local
+    config.hour: "{{ .Values.small_rate_limit_per_hour }}"
+    config.limit_by: credential
+  - name: request-size-limiting
+    config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+
+  - name: reviewFrameworkV3
+  uris: "{{ .Values.framework_service_prefix }}/v3/review"
+  upstream_url: "{{ .Values.taxonomy_service_url }}/framework/v3/review"
+  strip_uri: true
+  plugins:
+  - name: jwt
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - name: acl
+    config.whitelist:
+    - frameworkAdmin
+  - name: rate-limiting
+    config.policy: local
+    config.hour: "{{ .Values.small_rate_limit_per_hour }}"
+    config.limit_by: credential
+  - name: request-size-limiting
+    config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+
+- name: rejectFrameworkV3
+  uris: "{{ .Values.framework_service_prefix }}/v3/reject"
+  upstream_url: "{{ .Values.taxonomy_service_url }}/framework/v3/reject"
+  strip_uri: true
+  plugins:
+  - name: jwt
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - name: acl
+    config.whitelist:
+    - frameworkAdmin
+  - name: rate-limiting
+    config.policy: local
+    config.hour: "{{ .Values.small_rate_limit_per_hour }}"
+    config.limit_by: credential
+  - name: request-size-limiting
+    config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+
+- name: retireFrameworkV3
+  uris: "{{ .Values.framework_service_prefix }}/v3/retire"
+  upstream_url: "{{ .Values.taxonomy_service_url }}/framework/v3/retire"
+  strip_uri: true
+  plugins:
+  - name: jwt
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - name: acl
+    config.whitelist:
+    - frameworkAdmin
+  - name: rate-limiting
+    config.policy: local
+    config.hour: "{{ .Values.small_rate_limit_per_hour }}"
+    config.limit_by: credential
+  - name: request-size-limiting
+    config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
