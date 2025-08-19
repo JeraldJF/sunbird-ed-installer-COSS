@@ -2960,7 +2960,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird"
+										"value": "{{channel_id}}"
 									}
 								],
 								"body": {
@@ -2988,7 +2988,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird",
+										"value": "{{channel_id}}",
 										"type": "text"
 									}
 								],
@@ -3017,7 +3017,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird",
+										"value": "{{channel_id}}",
 										"type": "text"
 									}
 								],
@@ -3050,7 +3050,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird"
+										"value": "{{channel_id}}"
 									},
 									{
 										"key": "Authorization",
@@ -3104,7 +3104,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird"
+										"value": "{{channel_id}}"
 									},
 									{
 										"key": "Authorization",
@@ -3149,7 +3149,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird"
+										"value": "{{channel_id}}"
 									},
 									{
 										"key": "Authorization",
@@ -3194,7 +3194,7 @@
 									},
 									{
 										"key": "X-Channel-Id",
-										"value": "sunbird"
+										"value": "{{channel_id}}"
 									},
 									{
 										"key": "Authorization",
@@ -3260,7 +3260,7 @@
 											},
 											{
 												"key": "X-Channel-Id",
-												"value": "sunbird"
+												"value": "{{channel_id}}"
 											},
 											{
 												"key": "Authorization",
@@ -3304,7 +3304,7 @@
 											},
 											{
 												"key": "X-Channel-Id",
-												"value": "sunbird"
+												"value": "{{channel_id}}"
 											},
 											{
 												"key": "Authorization",
@@ -3365,7 +3365,7 @@
 											},
 											{
 												"key": "X-Channel-Id",
-												"value": "{{channel_name}}"
+												"value": "{{channel_id}}"
 											},
 											{
 												"key": "Authorization",
@@ -3426,7 +3426,7 @@
 											},
 											{
 												"key": "X-Channel-Id",
-												"value": "{{channel_name}}"
+												"value": "{{channel_id}}"
 											},
 											{
 												"key": "Authorization",
@@ -4045,7 +4045,7 @@
 								"header": [
 									{
 										"key": "X-Channel-id",
-										"value": "{{channel_name}}",
+										"value": "{{channel_id}}",
 										"type": "text"
 									},
 									{
