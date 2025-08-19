@@ -116,7 +116,6 @@
 									"",
 									"        const reqBody = JSON.parse(pm.request.body.raw)",
 									"        pm.environment.set(\"channel_name\", reqBody.request.channel);",
-									"    }",
 									"        pm.environment.set(\"channel_custodian_id\", challenId);",
 									"        pm.environment.set(\"channel_custodian_name\", reqBody.request.channel);",
 									"    }",
@@ -865,6 +864,7 @@
 								"value": "application/json"
 							}
 						],
+						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"request\": {\n        \"id\": \"orgProfileConfig\",\n        \"field\": \"orgProfileConfig\",\n        \"value\": \"{\\\"csv\\\":{\\\"supportedColumns\\\":{\\\"SCHOOL NAME\\\":\\\"orgName\\\",\\\"BLOCK CODE\\\":\\\"locationCode\\\",\\\"STATUS\\\":\\\"status\\\",\\\"SCHOOL ID\\\":\\\"organisationId\\\",\\\"EXTERNAL ID\\\":\\\"externalId\\\",\\\"DESCRIPTION\\\":\\\"description\\\"}, \\\"outputColumns\\\": {\\\"organisationId\\\":\\\"SCHOOL ID\\\",\\\"orgName\\\":\\\"SCHOOL NAME\\\",\\\"locationCode\\\":\\\"BLOCK CODE\\\",\\\"locationName\\\":\\\"BLOCK NAME\\\",\\\"externalId\\\":\\\"EXTERNAL ID\\\"}, \\\"outputColumnsOrder\\\":[\\\"organisationId\\\",\\\"orgName\\\",\\\"locationCode\\\", \\\"locationName\\\",\\\"externalId\\\"],\\\"mandatoryColumns\\\":[\\\"orgName\\\",\\\"locationCode\\\",\\\"status\\\"]}}\"\n    }\n}",
 							"options": {
