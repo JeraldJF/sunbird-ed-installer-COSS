@@ -7,9 +7,6 @@ superset:
   credentials:
     adminUser: admin
     adminPassword: *superset-admin-password
-  supersetNode:
-    connections:
-      db_pass: *postgresql-password
 kube-prometheus-stack:
   grafana:
     adminUser: admin
