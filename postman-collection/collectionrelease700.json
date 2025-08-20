@@ -2324,6 +2324,70 @@
 										"url": "{{host}}/api/object/category/v1/create"
 									},
 									"response": []
+								},
+								{
+									"name": "ObjectCategory - Competency Framework",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{apikey}}"
+											},
+											{
+												"key": "X-Authenticated-User-token",
+												"value": "{{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"request\": {\n        \"objectCategory\": {\n            \"name\": \"Competency Framework\",\n            \"description\":\"Competency Framework\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}/api/object/category/v1/create"
+									},
+									"response": []
+								},
+								{
+									"name": "ObjectCategory - Competency Level",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "Bearer {{apikey}}"
+											},
+											{
+												"key": "X-Authenticated-User-token",
+												"value": "{{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"request\": {\n        \"objectCategory\": {\n            \"name\": \"Competency Level\",\n            \"description\":\"Competency Level\"\n        }\n    }\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "{{host}}/api/object/category/v1/create"
+									},
+									"response": []
 								}
 							],
 							"description": "[https://github.com/project-sunbird/knowledge-platform/blob/master/scripts/definition-scripts/master_category_create](https://github.com/project-sunbird/knowledge-platform/blob/master/scripts/definition-scripts/master_category_create)"
@@ -2783,6 +2847,50 @@
 										"body": {
 											"mode": "raw",
 											"raw": "{\n    \"request\": {\n        \"objectCategoryDefinition\": {\n            \"categoryId\": \"obj-cat:exam-question\",\n            \"targetObjectType\": \"Content\",\n            \"objectMetadata\": {\n                \"config\": {},\n                \"schema\": {\n                    \"properties\": {\n                        \"trackable\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"enabled\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Yes\",\n                                        \"No\"\n                                    ],\n                                    \"default\": \"No\"\n                                }\n                            },\n                            \"additionalCategories\": {\n                                \"type\": \"array\",\n                                \"items\": {\n                                    \"type\": \"string\",\n                                    \"default\": \"Textbook\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}"
+										},
+										"url": "{{host}}/api/object/category/definition/v1/create"
+									},
+									"response": []
+								},
+								{
+									"name": "ObjectCategoryDefinition - Comeptency Framework",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{apikey}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"request\": {\n        \"objectCategoryDefinition\": {\n            \"categoryId\": \"obj-cat:competency-framework\",\n            \"targetObjectType\": \"Collection\",\n            \"objectMetadata\": {\n                \"config\": {},\n                \"schema\": {\n                    \"properties\": {\n                        \"sector\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"name\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Education\"\n                                    ],\n                                    \"default\": \"Education\",\n                                    \"description\": \"Sector name like Education, etc.\"\n                                },\n                                \"domain\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Preschool\"\n                                    ],\n                                    \"default\": \"Preschool\",\n                                    \"description\": \"Domain area like Preschool, etc.\"\n                                }\n                            }\n                        },\n                        \"signupBy\": {\n                            \"type\": \"string\",\n                            \"enum\": [\n                                \"Admin\",\n                                \"User\"\n                            ],\n                            \"description\": \"How users can signup - By Admin or By User (Self enroll)\"\n                        },\n                        \"enrollmentType\": {\n                            \"type\": \"string\",\n                            \"enum\": [\n                                \"Full Enrollement\",\n                                \"Entrance Exam Based\",\n                                \"Progress Based\"\n                            ],\n                            \"description\": \"Full Enrollement, Entrance Exam Based Enrolment, or Progress-Based Enrollment\"\n                        },\n                        \"certificate\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"enabled\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Yes\",\n                                        \"No\"\n                                    ],\n                                    \"default\": \"No\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}"
+										},
+										"url": "{{host}}/api/object/category/definition/v1/create"
+									},
+									"response": []
+								},
+								{
+									"name": "ObjectCategoryDefinition - Comeptency Level",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{apikey}}"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"request\": {\n        \"objectCategoryDefinition\": {\n            \"categoryId\": \"obj-cat:competency-level\",\n            \"targetObjectType\": \"Collection\",\n            \"objectMetadata\": {\n                \"config\": {},\n                \"schema\": {\n                    \"properties\": {\n                        \"name\": {\n                            \"type\": \"string\",\n                            \"enum\": [\n                                \"Beginner\",\n                                \"Intermediate\",\n                                \"Advanced\"\n                            ],\n                            \"default\": \"Beginner\"\n                        },\n                        \"timeLimit\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"enabled\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Yes\",\n                                        \"No\"\n                                    ],\n                                    \"default\": \"No\"\n                                },\n                                \"duration\": {\n                                    \"type\": \"object\",\n                                    \"properties\": {\n                                        \"value\": {\n                                            \"type\": \"string\",\n                                            \"minimum\": 1\n                                        },\n                                        \"unit\": {\n                                            \"type\": \"string\",\n                                            \"enum\": [\n                                                \"Days\",\n                                                \"Months\",\n                                                \"Years\"\n                                            ],\n                                            \"default\": \"Days\"\n                                        }\n                                    }\n                                }\n                            }\n                        },\n                        \"entranceExam\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"enabled\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Yes\",\n                                        \"No\"\n                                    ],\n                                    \"default\": \"No\"\n                                },\n                                \"course\": {\n                                    \"type\": \"string\",\n                                    \"description\": \"Course ID associated with the entrance exam\"\n                                }\n                            }\n                        },\n                        \"levelExam\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"course\": {\n                                    \"type\": \"string\",\n                                    \"description\": \"Course ID associated with the level exam\"\n                                },\n                                \"passingCriteria\": {\n                                    \"type\": \"object\",\n                                    \"properties\": {\n                                        \"mustPass\": {\n                                            \"type\": \"string\",\n                                            \"enum\": [\n                                                \"Yes\",\n                                                \"No\"\n                                            ],\n                                            \"default\": \"No\"\n                                        },\n                                        \"attemptsAllowed\": {\n                                            \"type\": \"integer\",\n                                            \"minimum\": 1,\n                                            \"default\": 1\n                                        }\n                                    }\n                                }\n                            }\n                        },\n                        \"certificate\": {\n                            \"type\": \"object\",\n                            \"properties\": {\n                                \"enabled\": {\n                                    \"type\": \"string\",\n                                    \"enum\": [\n                                        \"Yes\",\n                                        \"No\"\n                                    ],\n                                    \"default\": \"No\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    }\n}"
 										},
 										"url": "{{host}}/api/object/category/definition/v1/create"
 									},
