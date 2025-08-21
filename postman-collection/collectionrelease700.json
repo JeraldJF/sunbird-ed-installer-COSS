@@ -853,7 +853,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+								"value": "Bearer {{apikey}}"
 							},
 							{
 								"key": "x-authenticated-user-token",
@@ -884,7 +884,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+								"value": "Bearer {{apikey}}"
 							},
 							{
 								"key": "x-authenticated-user-token",
@@ -3787,12 +3787,12 @@
 										},
 										{
 											"key": "username",
-											"value": "contentcreator@yopmail.com",
+											"value": "contentcreator-fmps@yopmail.com",
 											"type": "text"
 										},
 										{
 											"key": "password",
-											"value": "Creator@123",
+											"value": "CreatorFmps@123",
 											"type": "text"
 										}
 									]
@@ -5273,7 +5273,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+								"value": "Bearer {{apikey}}"
 							},
 							{
 								"key": "Content-Type",
@@ -5304,7 +5304,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+								"value": "Bearer {{apikey}}"
 							},
 							{
 								"key": "Content-Type",
@@ -5335,7 +5335,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGlfYWRtaW4ifQ.-qfZEwBAoHFhxNqhGq7Vy_SNVcwB1AtMX8xbiVHF5FQ"
+								"value": "Bearer {{apikey}}"
 							},
 							{
 								"key": "Content-Type",
