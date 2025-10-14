@@ -72,7 +72,7 @@ images:
 
   player: &player
     repository: "ghcr.io/sunbird-ed/sunbirded-portal/player"
-    tag: "release-8.0.1-rc-t27_17710d2"
+    tag: "release-8.0.2-rc-t1_3241d2d"
 
   report: &report
     repository: "ghcr.io/project-sunbird/sunbird-report-service"
@@ -161,7 +161,7 @@ images:
   userorg: &userorg
     registry: "sunbirded.azurecr.io"
     repository: "ghcr.io/sunbird-lern/userorg-service"
-    tag: "release-8.0.0_rc7_5178806_9"
+    tag: "release-8.0.0_rc8_cb1a8a9_11"
 
   content: &content
     repository: "ghcr.io/sunbird-knowlg/knowledge-platform/content-service"
