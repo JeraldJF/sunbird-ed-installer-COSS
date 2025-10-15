@@ -52,7 +52,20 @@ Minimum resources required to install and run Sunbird-ED on any cloud provider
 3. Fill in the variables in `demo/global-values.yaml`.
    take reference from  [terraform/azure/README.md]
 
-4. Log in to your cloud provider:
+4. Controlling DIAL Services and Flink Jobs
+
+     If you need DIAL-related services and Flink jobs, you can enable them using the
+     `deploy_dial_services` flag.
+
+     - Default: `false` (DIAL services are not deployed)
+
+     - To enable: set it to `true` in your `global-values.yaml` file. For example:
+
+         ```yaml
+         deploy_dial_services: true
+         ```
+
+5. Log in to your cloud provider:
     ```bash
     # If  cloud provider is Azure
     az login --tenant AZURE_TENANT_ID
@@ -63,7 +76,7 @@ Minimum resources required to install and run Sunbird-ED on any cloud provider
     # If cloud provider is GCP
     gcloud auth login
     ```
-5. Run the installation script:
+6. Run the installation script:
      ```bash
      time ./install.sh
      ```
