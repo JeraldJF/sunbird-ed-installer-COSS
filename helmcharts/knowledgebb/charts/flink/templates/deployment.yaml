@@ -1,8 +1,25 @@
-{{- $currentScope := .}}
+{{- $currentScope := . }}
 {{- range $jobName, $jobData := .Values.flink_jobs }}
-{{- if $jobData.enabled }}
-{{- with $currentScope }}
-{{ $component := "taskmanager" }}
+
+  {{- /* Determine if this job should be enabled */}}
+  {{- $isDialUpdater := or (eq $jobName "dialcode-context-updater") (eq $jobName "qrcode-image-generator") }}
+  {{- /* Normalize global.deploy_dial_services (may be a string anchor) into a real boolean */}}
+  {{- $globalDialRaw := default false $.Values.global.deploy_dial_services }}
+  {{- $globalDialStr := printf "%v" $globalDialRaw | lower | trim }}
+  {{- $globalDialEnabled := or (eq $globalDialStr "true") (eq $globalDialStr "1") (eq $globalDialStr "yes") (eq $globalDialStr "y") (eq $globalDialStr "on") }}
+
+  {{- /* Normalize job-level enabled value (jobData.enabled) to boolean as well */}}
+  {{- $jobEnabledRaw := default false $jobData.enabled }}
+  {{- $jobEnabledStr := printf "%v" $jobEnabledRaw | lower | trim }}
+  {{- $jobEnabledBool := or (eq $jobEnabledStr "true") (eq $jobEnabledStr "1") (eq $jobEnabledStr "yes") (eq $jobEnabledStr "y") (eq $jobEnabledStr "on") }}
+
+  {{- /* If this is the dial updater, use the normalized global flag; otherwise use the job's enabled boolean. */}}
+  {{- $enabled := ternary $globalDialEnabled $jobEnabledBool $isDialUpdater }}
+
+  {{- if $enabled }}
+    {{- with $currentScope }}
+
+      {{- $component := "taskmanager" }}
 ---
 apiVersion: apps/v1
 kind: Deployment
