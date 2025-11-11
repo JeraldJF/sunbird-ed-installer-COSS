@@ -1,4 +1,4 @@
-{{- if .Values.lets_encrypt_ssl }}
+{{- if .Values.global.lets_encrypt_ssl }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -37,12 +37,12 @@ spec:
                   logfile /var/log/msmtp.log
 
                   account default
-                  host {{ .Values.smtp.host }}
-                  port {{ .Values.smtp.port }}
+                  host {{ .Values.global.mail_server_host }}
+                  port {{ .Values.global.mail_server_port }}
                   auth on
-                  user {{ .Values.smtp.user }}
-                  password {{ .Values.smtp.pass }}
-                  from {{ .Values.smtp.from }}
+                  user {{ .Values.global.mail_server_username }}
+                  password {{ .Values.global.mail_server_password }}
+                  from {{ .Values.global.mail_from_certbot_notifications }}
                   EOF
                   chmod 600 /etc/msmtprc
 
@@ -110,6 +110,16 @@ data:
 
     if [ -f "$CERT_DIR/fullchain.pem" ] && [ -f "$CERT_DIR/privkey.pem" ]; then
       echo "✅ Certificate files exist"
+
+      # 👉 NEW BLOCK ADDED HERE: create backup ConfigMap with renewed certs
+      echo ">>> Creating backup ConfigMap with renewed certs..."
+      kubectl create configmap certbot-certs-backup \
+        --from-file=fullchain.pem="$CERT_DIR/fullchain.pem" \
+        --from-file=privkey.pem="$CERT_DIR/privkey.pem" \
+        -n {{ .Release.Namespace }} \
+        --dry-run=client -o yaml | kubectl apply -f -
+      echo "✅ Backup ConfigMap 'certbot-certs-backup' created/updated successfully"
+      # 👆 END OF NEW BLOCK
 
       kubectl get configmap nginx-public-ingress -n {{ .Release.Namespace }} -o yaml > /tmp/cm.yaml
 
