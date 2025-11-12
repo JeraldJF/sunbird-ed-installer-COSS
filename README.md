@@ -112,7 +112,7 @@ If you are using Let’s Encrypt for SSL certificate management, follow the step
 
 ### 1. Enable Let’s Encrypt in Nginx
 
-In your `nginx/values.yaml`, set the following flag:
+In your `global-values.yaml`, set the following flag:
 
 ```yaml
 lets_encrypt_ssl: true
