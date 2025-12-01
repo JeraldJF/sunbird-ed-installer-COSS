@@ -131,6 +131,95 @@ function post_install_nodebb_plugins() {
     echo "NodeBB plugins are activated, built, and NodeBB has been restarted."
 }
 
+function generate_nodebb_master_token() {
+    echo ">> Generating NodeBB master token and updating ConfigMap..."
+    
+    # Wait for NodeBB to be ready after restart
+    echo "Waiting for NodeBB deployment to be ready..."
+    kubectl rollout status deployment nodebb -n sunbird --timeout=300s
+    
+    # Get random_string from global-values.yaml (using same pattern as other functions)
+    local current_directory="$(pwd)"
+    if [ "$(basename $current_directory)" != "$environment" ]; then
+        cd ../terraform/azure/$environment 2>/dev/null || true
+    fi
+    
+    # Extract random_string using kubectl get cm (similar to how other values are extracted)
+    RANDOM_STRING=$(grep 'random_string:' global-values.yaml | awk '{print $2}' | tr -d '"')
+    if [ -z "$RANDOM_STRING" ]; then
+        echo "ERROR: random_string not found in global-values.yaml"
+        return 1
+    fi
+    
+    NODEBB_ADMIN_PASSWORD="nodebb${RANDOM_STRING}"
+    echo "Admin password: nodebb<random_string>"
+    
+    # Generate master token via NodeBB API
+    echo "Calling NodeBB Write API to generate master token..."
+    
+    # Use curl from within the nodebb pod (similar to certificate_config function)
+    RESPONSE=$(kubectl -n sunbird exec deploy/nodebb -- curl -s -w "\n%{http_code}" -X POST \
+        'http://nodebb:4567/discussions/api/v3/users/1/tokens' \
+        -H 'Content-Type: application/json' \
+        -d "{\"password\": \"${NODEBB_ADMIN_PASSWORD}\"}")
+    
+    HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+    BODY=$(echo "$RESPONSE" | sed '$d')
+    
+    if [ "$HTTP_CODE" != "200" ]; then
+        echo "ERROR: Failed to generate token. HTTP Status: $HTTP_CODE"
+        echo "Response: $BODY"
+        
+        # Try alternative v1 API endpoint
+        echo "Trying alternative v1 API endpoint..."
+        RESPONSE=$(kubectl -n sunbird exec deploy/nodebb -- curl -s -w "\n%{http_code}" -X POST \
+            'http://nodebb:4567/discussions/api/v1/users/1/tokens' \
+            -H 'Content-Type: application/json' \
+            -d "{\"password\": \"${NODEBB_ADMIN_PASSWORD}\"}")
+        
+        HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+        BODY=$(echo "$RESPONSE" | sed '$d')
+        
+        if [ "$HTTP_CODE" != "200" ]; then
+            echo "ERROR: Alternative API also failed. HTTP Status: $HTTP_CODE"
+            echo "Response: $BODY"
+            return 1
+        fi
+    fi
+    
+    # Extract token from JSON response (using grep similar to certificate_config)
+    TOKEN=$(echo "$BODY" | grep -o '"token":"[^"]*' | sed 's/"token":"//' | sed 's/"$//')
+    
+    if [ -z "$TOKEN" ]; then
+        echo "ERROR: Could not extract token from response"
+        echo "Response: $BODY"
+        return 1
+    fi
+    
+    echo "Master token generated successfully!"
+    echo "Token: ${TOKEN:0:20}..." # Show first 20 chars for verification
+    
+    # Update the existing discussionmw-env ConfigMap with the token
+    echo "Updating discussionmw-env ConfigMap with master token..."
+    kubectl get configmap discussionmw-env -n sunbird -o yaml | \
+        sed "s|authorization_token: \"\"|authorization_token: \"$TOKEN\"|g" | \
+        kubectl apply -f -
+    
+    if [ $? -eq 0 ]; then
+        echo "ConfigMap discussionmw-env updated successfully with master token!"
+        
+        # Restart discussionmw to pick up the updated ConfigMap
+        echo "Restarting discussionmw deployment to load the master token..."
+        kubectl rollout restart deployment discussionmw -n sunbird
+        kubectl rollout status deployment discussionmw -n sunbird --timeout=300s
+        
+        echo ">> NodeBB master token provisioning completed successfully!"
+    else
+        echo "ERROR: Failed to update ConfigMap"
+        return 1
+    fi
+}
+
 function dns_mapping() {
     domain_name=$(kubectl get cm -n sunbird lms-env -ojsonpath='{.data.sunbird_web_url}')
     PUBLIC_IP=$(kubectl get svc -n sunbird nginx-public-ingress -ojsonpath='{.status.loadBalancer.ingress[0].ip}')
@@ -279,6 +368,7 @@ if [ $# -eq 0 ]; then
     install_helm_components
     cd ../terraform/azure/$environment
     post_install_nodebb_plugins
+    generate_nodebb_master_token
     restart_workloads_using_keys
     certificate_config
     dns_mapping
