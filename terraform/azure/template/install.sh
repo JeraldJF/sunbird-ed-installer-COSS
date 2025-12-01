@@ -134,17 +134,14 @@ function post_install_nodebb_plugins() {
 function generate_nodebb_master_token() {
     echo ">> Generating NodeBB master token and updating ConfigMap..."
     
-    # Wait for NodeBB to be ready after restart
     echo "Waiting for NodeBB deployment to be ready..."
     kubectl rollout status deployment nodebb -n sunbird --timeout=300s
     
-    # Get random_string from global-values.yaml (using same pattern as other functions)
     local current_directory="$(pwd)"
     if [ "$(basename $current_directory)" != "$environment" ]; then
         cd ../terraform/azure/$environment 2>/dev/null || true
     fi
     
-    # Extract random_string using kubectl get cm (similar to how other values are extracted)
     RANDOM_STRING=$(grep 'random_string:' global-values.yaml | awk '{print $2}' | tr -d '"')
     if [ -z "$RANDOM_STRING" ]; then
         echo "ERROR: random_string not found in global-values.yaml"
@@ -154,10 +151,8 @@ function generate_nodebb_master_token() {
     NODEBB_ADMIN_PASSWORD="nodebb${RANDOM_STRING}"
     echo "Admin password: nodebb<random_string>"
     
-    # Generate master token via NodeBB API
     echo "Calling NodeBB Write API to generate master token..."
     
-    # Use curl from within the nodebb pod (similar to certificate_config function)
     RESPONSE=$(kubectl -n sunbird exec deploy/nodebb -- curl -s -w "\n%{http_code}" -X POST \
         'http://nodebb:4567/discussions/api/v3/users/1/tokens' \
         -H 'Content-Type: application/json' \
@@ -170,7 +165,6 @@ function generate_nodebb_master_token() {
         echo "ERROR: Failed to generate token. HTTP Status: $HTTP_CODE"
         echo "Response: $BODY"
         
-        # Try alternative v1 API endpoint
         echo "Trying alternative v1 API endpoint..."
         RESPONSE=$(kubectl -n sunbird exec deploy/nodebb -- curl -s -w "\n%{http_code}" -X POST \
             'http://nodebb:4567/discussions/api/v1/users/1/tokens' \
@@ -187,7 +181,6 @@ function generate_nodebb_master_token() {
         fi
     fi
     
-    # Extract token from JSON response (using grep similar to certificate_config)
     TOKEN=$(echo "$BODY" | grep -o '"token":"[^"]*' | sed 's/"token":"//' | sed 's/"$//')
     
     if [ -z "$TOKEN" ]; then
@@ -197,9 +190,7 @@ function generate_nodebb_master_token() {
     fi
     
     echo "Master token generated successfully!"
-    echo "Token: ${TOKEN:0:20}..." # Show first 20 chars for verification
     
-    # Update the existing discussionmw-env ConfigMap with the token
     echo "Updating discussionmw-env ConfigMap with master token..."
     kubectl get configmap discussionmw-env -n sunbird -o yaml | \
         sed "s|authorization_token: \"\"|authorization_token: \"$TOKEN\"|g" | \
