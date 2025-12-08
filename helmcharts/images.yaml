@@ -185,7 +185,7 @@ images:
 
   assessment: &assessment
     repository: "ghcr.io/sunbird-inquiry/inquiry-api-service"
-    tag: ":release-8.1.0_rc4_62371b1_4"
+    tag: "release-8.1.0_rc4_62371b1_4"
 
   analytics: &analytics
     registry: "sunbirded.azurecr.io"

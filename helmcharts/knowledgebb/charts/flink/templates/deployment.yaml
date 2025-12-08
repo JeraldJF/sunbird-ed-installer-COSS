@@ -120,7 +120,7 @@ kind: Deployment
 metadata:
   name: {{ printf "%s-%s" $jobName $component }}
   namespace: {{ .Release.Namespace }}
-  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}     
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
   annotations:
     checksum/config: {{ .Files.Glob "configs/*" | toYaml | sha256sum }}
     checksum/job-config: {{ $jobData | toYaml | sha256sum }}
