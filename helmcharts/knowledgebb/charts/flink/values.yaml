@@ -24,6 +24,9 @@ service:
       port: 80
       targetPort: 8081
 
+commonLabels:
+  release: monitoring
+
 ingress: {}
 
 resources:
@@ -64,13 +67,32 @@ configmap:
 serviceAccount:
   create: false
 
-serviceMonitor:
-  enabled: false
-  interval: 30s
-  scrapeTimeout: 10s
-  labels: {} # additional labels e.g. release: prometheus
-  honorLabels: true
-  jobLabel: "app.kubernetes.io/name"
+# serviceMonitor:
+#   enabled: true
+#   interval: 30s
+#   scrapeTimeout: 10s
+#   labels: {} # additional labels e.g. release: prometheus
+#   honorLabels: true
+#   jobLabel: "app.kubernetes.io/name"
+serviceMonitor: &serviceMonitor
+  jobmanager:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    labels:
+      release: monitoring # additional labels e.g. release: prometheus
+    honorLabels: true
+    jobLabel: "app.kubernetes.io/name"
+    port: prom
+  taskmanager:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s
+    labels:
+      release: monitoring # additional labels e.g. release: prometheus
+    honorLabels: true
+    jobLabel: "app.kubernetes.io/name"
+    port: prom
 
 # Example values.yaml structure
 initContainers: {}
@@ -131,8 +153,8 @@ log4j_console_properties: |
   # The following lines keep the log level of common libraries/connectors on
   # log level INFO. The root logger does not override this. You have to manually
   # change the log levels here.
-  logger.akka.name = akka
-  logger.akka.level = ERROR
+  logger.pekko.name = pekko
+  logger.pekko.level = ERROR
   logger.kafka.name= org.apache.kafka
   logger.kafka.level = ERROR
   logger.hadoop.name = org.apache.hadoop
@@ -147,7 +169,7 @@ log4j_console_properties: |
   appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
 
   # Suppress the irrelevant (wrong) warnings from the Netty channel handler
-  logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
+  logger.netty.name = org.apache.flink.shaded.pekko.org.jboss.netty.channel.DefaultChannelPipeline
   logger.netty.level = OFF
 
 base_config: |
@@ -224,6 +246,7 @@ base_config: |
 flink_jobs:
   search-indexer:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -326,6 +349,7 @@ flink_jobs:
 
   transaction-event-processor:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -383,6 +407,7 @@ flink_jobs:
 
   asset-enrichment:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -454,6 +479,7 @@ flink_jobs:
 
   post-publish-processor:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -534,6 +560,7 @@ flink_jobs:
 
   dialcode-context-updater:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -591,6 +618,7 @@ flink_jobs:
 
   qrcode-image-generator:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -661,6 +689,7 @@ flink_jobs:
 
   video-stream-generator:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
       job {
@@ -821,6 +850,7 @@ flink_jobs:
 
   content-publish:
     enabled: true
+    serviceMonitor: *serviceMonitor
     config: |+
       include file("/data/flink/conf/base-config.conf")
 
