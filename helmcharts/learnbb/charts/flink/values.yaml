@@ -26,7 +26,7 @@ service:
       port: 80
       targetPort: 8081
 commonLabels:
-  release: monitoring        
+  release: monitoring
 
 ingress: {}
   # enabled: false
