@@ -5,7 +5,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/sunbird-knowlg/knowledge-platform-jobs
-  tag: "release-8.0.0_rc7_be30b86"
+  tag: "release-8.1.0_rc1_e7ac747"
   pullPolicy: IfNotPresent
   pullSecrets: []
 
@@ -497,6 +497,7 @@ flink_jobs:
 
       dialcode {
         linkable.primaryCategory = ["Course"]
+        storage.container = "{{ .Values.global.dial_state_container_public }}"
       }
 
       cloudstorage.metadata.replace_absolute_path=true
