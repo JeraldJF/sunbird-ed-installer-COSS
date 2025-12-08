@@ -80,7 +80,7 @@ serviceAccount:
   create: false
 
 commonLabels:
-  release: monitoring    
+  release: monitoring
 
 # serviceMonitor:
 #   enabled: false
