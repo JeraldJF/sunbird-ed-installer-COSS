@@ -103,7 +103,7 @@ flink: &flink
   resources:
     requests:
       cpu: 100m
-      memory: 500M
+      memory: 1024Mi
     limits:
       cpu: 1
       memory: 2048Mi  
@@ -534,14 +534,14 @@ kube-prometheus-stack:
             accessModes: ["ReadWriteOnce"]
             resources:
               requests:
-                storage: 25Gi
+                storage: 100Gi
       resources:
         requests:
-          cpu: 500m
-          memory: 1Gi
+          cpu: "1"
+          memory: "2Gi"
         limits:
-          cpu: 1
-          memory: 2Gi      
+          cpu: "2"
+          memory: "4Gi"    
 
 velero:
   resources: 

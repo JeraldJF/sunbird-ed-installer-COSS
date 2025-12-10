@@ -84,16 +84,15 @@ spec:
             "-Ds3.path.style.access={{ .Values.s3_path_style_access }}",
   {{- end }}
             "-Dweb.submit.enable=false",
-            "-Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter",
-            "-Dmetrics.reporter.prom.host={{ $jobName }}-taskmanager",
+            "-Dmetrics.reporters=prom",
+            "-Dmetrics.reporter.prom.factory.class=org.apache.flink.metrics.prometheus.PrometheusReporterFactory",
+            "-Dmetrics.reporter.prom.port={{ .Values.taskmanager.prom_port }}",
             "-Dmetrics.reporter.prom.port=9251-9260",
             "-Djobmanager.rpc.address={{ $jobName }}-jobmanager",
             "-Dtaskmanager.rpc.port={{ .Values.taskmanager.rpc_port }}"]
           ports:
-            {{- range .Values.service.ports }}
-            - name: {{ .name }}
-              containerPort: {{ .targetPort }}
-            {{- end }}
+          - containerPort: {{ .Values.taskmanager.rpc_port }}
+            name: rpc
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           securityContext:
@@ -180,7 +179,8 @@ spec:
   {{- end }}
                 "--job-classname={{ $jobData.job_classname }}",
                 "-Dweb.submit.enable=false",
-                "-Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter",
+                "-Dmetrics.reporters=prom",
+                "-Dmetrics.reporter.prom.factory.class=org.apache.flink.metrics.prometheus.PrometheusReporterFactory",
                 "-Dmetrics.reporter.prom.port={{ .Values.jobmanager.prom_port }}",
                 "-Djobmanager.rpc.address={{ $jobName }}-jobmanager",
                 "-Djobmanager.rpc.port={{ .Values.jobmanager.rpc_port }}",
