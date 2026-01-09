@@ -10,6 +10,8 @@ image:
   pullSecrets: []
 
 args:
+  - /bin/sh
+  - -c
   - |
     ./nodebb build
     node loader.js --no-daemon --no-silent
